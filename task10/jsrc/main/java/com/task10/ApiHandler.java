@@ -31,7 +31,6 @@ public class ApiHandler implements RequestHandler<APIGatewayProxyRequestEvent, A
     public APIGatewayProxyResponseEvent handleRequest(APIGatewayProxyRequestEvent input, Context context) {
         this.initCognito();
         this.initDynamoDbClient();
-        ;
         Gson gson = new GsonBuilder().create();
 
         String url = input.getPath();
@@ -54,14 +53,19 @@ public class ApiHandler implements RequestHandler<APIGatewayProxyRequestEvent, A
         if (url.equals("/signin")) {
             SigninRequest signinRequest = gson.fromJson(input.getBody(), new TypeToken<SigninRequest>() {
             }.getType());
-            AdminInitiateAuthResponse adminInitiateAuthResponse = login(cognitoClient, signinRequest.getEmail(), signinRequest.getPassword());
-
-            SigningResponse signingResponse = new SigningResponse();
-            signingResponse.setAccessToken(adminInitiateAuthResponse.authenticationResult().idToken());
             APIGatewayProxyResponseEvent apiGatewayProxyResponseEvent = new APIGatewayProxyResponseEvent();
-            apiGatewayProxyResponseEvent.withBody(gson.toJson(signingResponse));
 
-            return apiGatewayProxyResponseEvent;
+            try {
+                AdminInitiateAuthResponse adminInitiateAuthResponse = login(cognitoClient, signinRequest.getEmail(), signinRequest.getPassword());
+                SigningResponse signingResponse = new SigningResponse();
+                signingResponse.setAccessToken(adminInitiateAuthResponse.authenticationResult().idToken());
+                apiGatewayProxyResponseEvent.withBody(gson.toJson(signingResponse));
+
+                return apiGatewayProxyResponseEvent;
+            } catch (Exception e) {
+                apiGatewayProxyResponseEvent.setStatusCode(400);
+                return apiGatewayProxyResponseEvent;
+            }
         }
 
         if (url.equals("/tables")) {

@@ -18,7 +18,7 @@ public class DynamoDbService {
 
     public TablesResponse getAllTables(AmazonDynamoDB amazonDynamoDB) {
         DynamoDB dynamoDB = new DynamoDB(amazonDynamoDB);
-        Table table = dynamoDB.getTable("Tables");
+        Table table = dynamoDB.getTable("cmtr-985d4752-Tables-test");
 
         Iterator<Item> iterator = table.scan().iterator();
         TablesResponse response = new TablesResponse();
@@ -39,7 +39,7 @@ public class DynamoDbService {
 
     public Tables getTableById(AmazonDynamoDB amazonDynamoDB, int tableId) {
         DynamoDB dynamoDB = new DynamoDB(amazonDynamoDB);
-        Table table = dynamoDB.getTable("Tables");
+        Table table = dynamoDB.getTable("cmtr-985d4752-Tables-test");
 
         GetItemSpec getItemSpec = new GetItemSpec().withPrimaryKey("id", tableId);
         Item item = table.getItem(getItemSpec);
@@ -71,7 +71,7 @@ public class DynamoDbService {
 
     public ReservationsResponse getAllReservations(AmazonDynamoDB amazonDynamoDB) {
         DynamoDB dynamoDB = new DynamoDB(amazonDynamoDB);
-        Table table = dynamoDB.getTable("Reservations");
+        Table table = dynamoDB.getTable("cmtr-985d4752-Reservations-test");
 
         Iterator<Item> iterator = table.scan().iterator();
         ReservationsResponse response = new ReservationsResponse();
@@ -79,7 +79,7 @@ public class DynamoDbService {
         while (iterator.hasNext()) {
             Item item = iterator.next();
             Reservations reservation = new Reservations();
-            reservation.setReservationId(item.getString("reservationId"));
+            reservation.setId(item.getString("id"));
             reservation.setDate(item.getString("date"));
             reservation.setClientName(item.getString("clientName"));
             reservation.setSlotTimeEnd(item.getString("slotTimeEnd"));
@@ -95,7 +95,7 @@ public class DynamoDbService {
     public ReservationCreationResponse createReservation(AmazonDynamoDB amazonDynamoDB, ReservationsRequest reservationsRequest) {
         Reservations reservations = new Reservations();
         String reservationId = UUID.randomUUID().toString();
-        reservations.setReservationId(reservationId);
+        reservations.setId(reservationId);
         reservations.setPhoneNumber(reservationsRequest.getPhoneNumber());
         reservations.setDate(reservationsRequest.getDate());
         reservations.setSlotTimeStart(reservationsRequest.getSlotTimeStart());

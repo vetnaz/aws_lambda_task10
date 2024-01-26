@@ -7,20 +7,20 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 @DynamoDBTable(tableName = "cmtr-985d4752-Reservations-test")
 public class Reservations {
     @DynamoDBHashKey(attributeName = "id")
-    private String reservationId;
+    private String id;
     private String clientName;
     private String phoneNumber;
     private String date;
     private String slotTimeStart;
     private String slotTimeEnd;
 
-    @DynamoDBHashKey(attributeName = "reservationId")
-    public String getReservationId() {
-        return reservationId;
+    @DynamoDBHashKey(attributeName = "id")
+    public String getId() {
+        return id;
     }
 
-    public void setReservationId(String reservationId) {
-        this.reservationId = reservationId;
+    public void setId(String id) {
+        this.id = id;
     }
 
     @DynamoDBAttribute(attributeName = "clientName")

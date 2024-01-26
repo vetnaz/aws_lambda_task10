@@ -157,7 +157,20 @@
       },
       "/reservations": {
         "enable_cors": true,
-        "ANY": {
+        "GET": {
+          "integration_request_body_template": {},
+          "authorization_type": "authorizer",
+          "integration_type": "lambda",
+          "method_request_parameters": {},
+          "default_error_pattern": true,
+          "integration_passthrough_behavior": "WHEN_NO_TEMPLATES",
+          "lambda_name": "api_handler",
+          "enable_proxy": true
+        }
+      },
+      "/reservations": {
+        "enable_cors": true,
+        "POST": {
           "integration_request_body_template": {},
           "authorization_type": "authorizer",
           "integration_type": "lambda",
@@ -181,7 +194,7 @@
   },
   "Reservations": {
     "resource_type": "dynamodb_table",
-    "hash_key_name": "reservationId",
+    "hash_key_name": "id",
     "hash_key_type": "S",
     "read_capacity": 1,
     "write_capacity": 1,
