@@ -1,0 +1,17 @@
+com\task10\dto\ReservationsResponse.class
+com\task10\ApiHandler.class
+com\task10\model\Reservations.class
+com\task10\ApiHandler$3.class
+com\task10\dto\TablesRequest.class
+com\task10\dto\TableCreationResponse.class
+com\task10\model\Tables.class
+com\task10\dto\ReservationsRequest.class
+com\task10\dto\SigninRequest.class
+com\task10\dto\ReservationCreationResponse.class
+com\task10\ApiHandler$4.class
+com\task10\ApiHandler$1.class
+com\task10\dto\SignupRequest.class
+com\task10\dto\SigningResponse.class
+com\task10\dto\TablesResponse.class
+com\task10\service\DynamoDbService.class
+com\task10\ApiHandler$2.class
