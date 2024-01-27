@@ -16,10 +16,7 @@ import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.cognitoidentityprovider.CognitoIdentityProviderClient;
 import software.amazon.awssdk.services.cognitoidentityprovider.model.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @LambdaHandler(lambdaName = "api_handler", roleName = "api_handler-role")
 public class ApiHandler implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
@@ -101,6 +98,7 @@ public class ApiHandler implements RequestHandler<APIGatewayProxyRequestEvent, A
                 try{
                     apiGatewayProxyResponseEvent.withBody(gson.toJson(dynamoDbService.createReservation(amazonDynamoDB, reservationsRequest)));
                 }catch (Exception e){
+                    System.out.println(e);
                     apiGatewayProxyResponseEvent.withStatusCode(400);
                 }
                 return apiGatewayProxyResponseEvent;

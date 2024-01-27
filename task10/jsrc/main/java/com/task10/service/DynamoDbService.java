@@ -92,7 +92,10 @@ public class DynamoDbService {
 
 
     public ReservationCreationResponse createReservation(AmazonDynamoDB amazonDynamoDB, ReservationsRequest reservationsRequest) {
-        getTableById(amazonDynamoDB, reservationsRequest.getTableNumber());
+        if(getAllTables(amazonDynamoDB).getTables().stream().noneMatch(x->x.getNumber() == reservationsRequest.getTableNumber())){
+            System.out.println("Table does not exist");
+            throw new RuntimeException();
+        }
         ReservationsResponse checkReservationsResponse = getAllReservations(amazonDynamoDB);
 
         checkReservationsResponse.getReservations().stream().filter(x ->
@@ -103,6 +106,7 @@ public class DynamoDbService {
                         && x.getSlotTimeStart().equals(reservationsRequest.getSlotTimeStart())
                         && x.getPhoneNumber().equals(reservationsRequest.getPhoneNumber())
         ).findFirst().ifPresent(x -> {
+            System.out.println("Item already exists");
             throw new RuntimeException();
         });
 
