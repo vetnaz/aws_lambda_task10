@@ -57,7 +57,7 @@ public class DynamoDbService {
         Tables tables = new Tables();
         tables.setId(tablesRequest.getId());
         tables.setNumber(tablesRequest.getNumber());
-        tables.setMinOrder(tablesRequest.getPlaces());
+        tables.setMinOrder(tablesRequest.getMinOrder());
         tables.setVip(tablesRequest.isVip());
         tables.setPlaces(tablesRequest.getPlaces());
 
