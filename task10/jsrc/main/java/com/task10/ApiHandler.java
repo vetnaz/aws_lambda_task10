@@ -98,7 +98,11 @@ public class ApiHandler implements RequestHandler<APIGatewayProxyRequestEvent, A
             } else if (input.getHttpMethod().equals("POST")) {
                 ReservationsRequest reservationsRequest = gson.fromJson(input.getBody(), new TypeToken<ReservationsRequest>() {
                 }.getType());
-                apiGatewayProxyResponseEvent.withBody(gson.toJson(dynamoDbService.createReservation(amazonDynamoDB, reservationsRequest)));
+                try{
+                    apiGatewayProxyResponseEvent.withBody(gson.toJson(dynamoDbService.createReservation(amazonDynamoDB, reservationsRequest)));
+                }catch (Exception e){
+                    apiGatewayProxyResponseEvent.withStatusCode(400);
+                }
                 return apiGatewayProxyResponseEvent;
             }
         }

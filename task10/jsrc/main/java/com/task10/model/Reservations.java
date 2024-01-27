@@ -8,11 +8,21 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 public class Reservations {
     @DynamoDBHashKey(attributeName = "id")
     private String id;
+    private int tableNumber;
     private String clientName;
     private String phoneNumber;
     private String date;
     private String slotTimeStart;
     private String slotTimeEnd;
+
+    @DynamoDBAttribute(attributeName = "tableNumber")
+    public int getTableNumber() {
+        return tableNumber;
+    }
+
+    public void setTableNumber(int tableNumber) {
+        this.tableNumber = tableNumber;
+    }
 
     @DynamoDBHashKey(attributeName = "id")
     public String getId() {

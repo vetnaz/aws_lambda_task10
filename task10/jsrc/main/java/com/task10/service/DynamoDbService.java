@@ -9,9 +9,7 @@ import com.task10.model.Reservations;
 import com.task10.model.Tables;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.UUID;
+import java.util.*;
 
 
 public class DynamoDbService {
@@ -85,6 +83,7 @@ public class DynamoDbService {
             reservation.setSlotTimeEnd(item.getString("slotTimeEnd"));
             reservation.setSlotTimeStart(item.getString("slotTimeStart"));
             reservation.setPhoneNumber(item.getString("phoneNumber"));
+            reservation.setTableNumber(item.getInt("tableNumber"));
             reservations.add(reservation);
         }
         response.setReservations(reservations);
@@ -93,6 +92,20 @@ public class DynamoDbService {
 
 
     public ReservationCreationResponse createReservation(AmazonDynamoDB amazonDynamoDB, ReservationsRequest reservationsRequest) {
+        getTableById(amazonDynamoDB, reservationsRequest.getTableNumber());
+        ReservationsResponse checkReservationsResponse = getAllReservations(amazonDynamoDB);
+
+        checkReservationsResponse.getReservations().stream().filter(x ->
+                x.getClientName().equals(reservationsRequest.getClientName())
+                        && x.getDate().equals(reservationsRequest.getDate())
+                        && x.getTableNumber() == reservationsRequest.getTableNumber()
+                        && x.getSlotTimeEnd().equals(reservationsRequest.getSlotTimeEnd())
+                        && x.getSlotTimeStart().equals(reservationsRequest.getSlotTimeStart())
+                        && x.getPhoneNumber().equals(reservationsRequest.getPhoneNumber())
+        ).findFirst().ifPresent(x -> {
+            throw new RuntimeException();
+        });
+
         Reservations reservations = new Reservations();
         String reservationId = UUID.randomUUID().toString();
         reservations.setId(reservationId);
@@ -101,6 +114,7 @@ public class DynamoDbService {
         reservations.setSlotTimeStart(reservationsRequest.getSlotTimeStart());
         reservations.setSlotTimeEnd(reservationsRequest.getSlotTimeEnd());
         reservations.setClientName(reservationsRequest.getClientName());
+        reservations.setTableNumber(reservationsRequest.getTableNumber());
 
         DynamoDBMapper mapper = new DynamoDBMapper(amazonDynamoDB);
         mapper.save(reservations);

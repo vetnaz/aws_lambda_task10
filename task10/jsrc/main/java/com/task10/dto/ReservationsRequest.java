@@ -10,7 +10,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ReservationsRequest {
-    private String reservationId;
+    private int tableNumber;
     private String clientName;
     private String phoneNumber;
     private String date;
